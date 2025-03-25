@@ -5,7 +5,7 @@ QuantumGraphColoring
 [![codecov](https://codecov.io/gh/REPLACE_WITH_OWNER_ACCOUNT/QuantumGraphColoring/branch/main/graph/badge.svg)](https://codecov.io/gh/REPLACE_WITH_OWNER_ACCOUNT/QuantumGraphColoring/branch/main)
 
 
-A short description of the project (less than one line).
+A re-implementation of the K-coloring algorithem proposed in A general quantum method to solve the graph K-colouring problem by Maurice Clerc
 
 ### Copyright
 
@@ -16,3 +16,5 @@ Copyright (c) 2025, Galen Flanagan
  
 Project based on the 
 [Computational Molecular Science Python Cookiecutter](https://github.com/molssi/cookiecutter-cms) version 1.10.
+
+Maurice Clerc. A general quantum method to solve the graph K-colouring problem. 2023. hal-02891847v3
