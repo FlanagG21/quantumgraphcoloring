@@ -3,11 +3,11 @@ import sys
 
 import pytest
 import numpy as np
-import montecarlo as montecarlo
+import quantumgraphcoloring as quantumgraphcoloring
 
 
 def test_create():
-    my_bs2 = montecarlo.BitString(8)
+    my_bs2 = quantumgraphcoloring.BitString(8)
     my_bs2.flip_site(2)
     my_bs2.flip_site(2)
     print(" The following should be 0:")
@@ -25,7 +25,7 @@ def test_create():
 
     
 def test_basicFunctions():
-    my_bs = montecarlo.BitString(13)
+    my_bs = quantumgraphcoloring.BitString(13)
     my_bs.set_config([0,1,1,0,0,1,0,0,1,0,1,0,0])
     assert(my_bs.on() == 5)
     assert(my_bs.off() == 8)
@@ -33,7 +33,7 @@ def test_basicFunctions():
     
     
 def test_advanced():
-    my_bs3 = montecarlo.BitString(20)
+    my_bs3 = quantumgraphcoloring.BitString(20)
     my_bs3.set_int_config(3221)
 
     # Let's make sure this worked:
@@ -46,10 +46,10 @@ def test_advanced():
         assert(my_bs3.int() == i) # Converts back from binary to integer and tests
 
 def test_equal():
-    my_bs4 = montecarlo.BitString(13)
+    my_bs4 = quantumgraphcoloring.BitString(13)
     my_bs4.set_config([0,1,1,0,0,1,0,1,1,0,1,0,0])
 
-    my_bs5 = montecarlo.BitString(13)
+    my_bs5 = quantumgraphcoloring.BitString(13)
     my_bs5.set_int_config(3252)
     assert(my_bs4 == my_bs5)
 
