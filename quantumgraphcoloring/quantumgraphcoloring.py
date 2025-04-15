@@ -12,10 +12,13 @@ class coloring:
         self.K = K
         self.G = G
         self.Edges = []
-        for i in range(len(self.J)):
-            nodes = len(self.J[i])
+        index = 0
+        for i in range(len(self.G)):
+            nodes = len(self.G[i])
             self.Edges.append(np.zeros(nodes, dtype=int))
-            for j in range(i+1, len(self.J[i])):
+            for j in range(i+1, nodes):
+                self.Edges[index] = G[i][j]
+                index += 1
         
 
 
