@@ -1,76 +1,99 @@
 """Provide the primary functions."""
 from .bitstring import *
+import matplotlib.pyplot as plt
 import numpy as np
 from qiskit import *
+from qiskit.visualization import plot_histogram
+from qiskit_aer import Aer
+
+def color(k, G=[[]]):
+    """_summary_
+
+    Args:
+        k (_type_): number of colors to color the graph
+        G (list, optional): adjacency matrix of the graph to be colored.
+    """
+    sim = Aer.get_backend('qasm_simulator')
+    circuit = circuitGenerator(k, G)
+    d=circuit.depth()
+    print("Circuit depth: ",d)
+    job = sim.run(circuit, shots = 1000)
+    counts = job.result().get_counts()
+    print(counts)
+    print('The solutions, if any, are given by the strings that are not 0*')
+    print('You can rebuild the color matrix by reading the string from right to left')
+    print('(each row has ',k,' bits)')
 
 
-def color(k, G = [[]]):
+
+def circuitGenerator(nColors, G = [[]]):
     """_summary_
 
     Args:
         G (list, optional): Adjacency matrix for nodes
     Returns: 
-        a list of Edges
+        the circuit that will color the graph. (hopefully)
     """
     edges = getEdges(G)
-    numNodes = len(G[0])
-    startAncilas = (k + 1) * numNodes #sc
-    numPairs = round((numNodes-1)*numNodes/2)
-    startGraph = round((k + 1) * numNodes + numPairs) #sg
-    q = QuantumRegister(startAncilas + 2*numPairs)
-    c=ClassicalRegister(k*numNodes)
-    circuit = QuantumCircuit(q,c)
-    for n in range(numNodes):
+    numNodes = len(G)
+    nc = nColors + 1
+    nn2=round((numNodes-1)*numNodes/2)
+    sc=round(nc*numNodes)
+    sg=round(nc*numNodes + nn2)
+    nqbits=sc + 2*nn2
+    q = QuantumRegister(nqbits)
+    c=ClassicalRegister(nColors*numNodes)
+    qc = QuantumCircuit(q,c)
+    for n in range(nn2):
         if edges[n] == 1:
-            circuit.x(startGraph + n)
-    a = 0
+            qc.x(sg+n)
+    s=0
     for n in range(numNodes):
-        for c in range(k):
-            circuit.h(a+c)
-        a=a+k
-    s = 0
+        for k in range(nColors):
+            qc.h(s+k)
+        s=s+nc
+    s=0
     for n in range(numNodes):
-        for c in range(k - 1):
-            for i in range(c + 1, k):
-                circuit.ccx(s + c, s+i, s+k)
-                circuit.cx(s+k, s+c)
-                circuit.reset(s+k)
-        for c in range(k):
-            circuit.x(s+c)
-        cb = list(range(s, s+k))
-        circuit.mcx(cb, s+k)
-        for c in range(k):
-            circuit.x(s+k)
-        circuit.cx(s+k, s+k-1)
-        circuit.reset(s+k)
-        s = s + k+1
-    for c in range(k):
-        s = (k+1) * numNodes
-        for n1 in range(numNodes - 1):
-            for n2 in range(n1 + 1,numNodes):
-                n11 = (k+1) * n1 + c
-                n22 = (k+1) *n2 + c
-                circuit.ccx(n11,n22,s)
-                s = s+1
-    for n in range(startAncilas, startAncilas + numPairs):
+        for k in range(nColors-1):
+            for l in range(k+1,nColors):
+                qc.ccx (s+k,s+l,s+nColors)
+                qc.cx (s+nColors,s+k)
+                qc.reset(s+nColors)
+        for k in range(nColors):
+            qc.x(s+k) 
+        cb=list(range(s,s+nColors) )
+        qc.mcx (cb,s+nColors)
+        for k in range(nColors):
+            qc.x(s+k) 
+        qc.cx (s+nColors,s+nColors-1)
+        qc.reset(s+nColors)
+        s=s+nc
+    for k in range(nColors):
+        s=nc*numNodes
+        for n1 in range(numNodes-1):
+            for n2 in range(n1+1,numNodes):
+                n11=nc*n1+k 
+                n22=nc*n2+k 
+                qc.ccx(n11,n22,s) 
+                s=s+1
+    for n in range(sc,sc+nn2):
         for node in range(numNodes):
-            qnode = (k+1) * node
-            qnc = qnode + k
-            for c in range(k):
-                cb = [n, n + numPairs, qnode + c]
-                circuit.mcx(cb, qnc)
-                cb = [n, n+numPairs, qnc]
-                circuit.mcx(cb, qnode + c)
-                circuit.reset(qnc)
-    cb = 0
+            qnode=nc*node
+            qnc=qnode+nColors
+        for k in range(nColors):
+            cb=[n,n+nn2,qnode+k]
+            qc.mcx (cb,qnc)
+            cb=[n,n+nn2,qnc]
+            qc.mcx (cb,qnode+k)
+            qc.reset(qnc)
+    cb=0
     for n in range(numNodes):
-        s = n*k
-        for c in range(k):
-            qb = s +k
-            circuit.measure(qb, cb)
-            cb = cb+1
-    print('end of measures')
-    print(circuit)
+        s=n*(nColors+1)
+        for k in range(nColors):
+            qb=s+k
+            qc.measure(qb,cb)
+            cb=cb+1
+    return qc
 
 
 
@@ -83,11 +106,8 @@ def getEdges(G = [[]]):
         a list of Edges
     """
     edges = []
-    index = 0
     for i in range(len(G)):
         nodes = len(G[i])
-        edges.append(np.zeros(nodes, dtype=int))
         for j in range(i+1, nodes):
-            edges[index] = G[i][j]
-            index += 1
+            edges.append(G[i][j])
     return edges
