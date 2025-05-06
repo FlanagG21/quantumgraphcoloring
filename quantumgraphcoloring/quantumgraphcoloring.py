@@ -15,14 +15,11 @@ def color(k, G=[[]]):
     """
     sim = Aer.get_backend('qasm_simulator')
     circuit = circuitGenerator(k, G)
-    d=circuit.depth()
-    print("Circuit depth: ",d)
     job = sim.run(circuit, shots = 1000)
     counts = job.result().get_counts()
     print(counts)
-    print('The solutions, if any, are given by the strings that are not 0*')
-    print('You can rebuild the color matrix by reading the string from right to left')
-    print('(each row has ',k,' bits)')
+    print('The solutions, if there are any, are the ones without', k,"leading 0's")
+    print('n*k matrix can be rebuilt reading right to left, starting a new line every', k, "bits")
 
 
 
@@ -32,7 +29,7 @@ def circuitGenerator(nColors, G = [[]]):
     Args:
         G (list, optional): Adjacency matrix for nodes
     Returns: 
-        the circuit that will color the graph. (hopefully)
+        the circuit that will color the graph.
     """
     edges = getEdges(G)
     numNodes = len(G)
@@ -103,7 +100,7 @@ def getEdges(G = [[]]):
     Args:
         G (list, optional): Adjacency matrix for nodes
     Returns: 
-        a list of Edges
+        a list of the Edges of the graph
     """
     edges = []
     for i in range(len(G)):
