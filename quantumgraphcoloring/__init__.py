@@ -1,6 +1,8 @@
-"""A short description of the project (less than one line)."""
+"""A package for coloring graphs using a quantum based algorithm"""
 
 # Add imports here
+
+
 from .quantumgraphcoloring import *
 
 from .bitstring import *
