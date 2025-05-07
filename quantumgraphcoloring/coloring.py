@@ -44,7 +44,7 @@ def color(k, G=[[]]):
                 possibleColoring = True
                 break
         i += 1
-    colorMatrix = getColoring(k, bitList, G)
+    colorMatrix = getColoringMatrix(k, bitList, G)
     graph = nx.from_numpy_array(np.array(G))
     colors = ["red", "green", "blue", "yellow", "purple", "orange"]
     colorNumber = [row.index(1) for row in colorMatrix]
@@ -138,7 +138,7 @@ def getEdges(G = [[]]):
             edges.append(G[i][j])
     return edges
 
-def getColoring(k, bitList = [], G =[[]]):
+def getColoringMatrix(k, bitList = [], G =[[]]):
     """gets the n*k coloring matrix
 
     Args:
