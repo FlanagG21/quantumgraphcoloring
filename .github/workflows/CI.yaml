@@ -57,7 +57,11 @@ jobs:
         shell: bash -l {0}
         run: |
           pytest -v --cov=quantumgraphcoloring --cov-report=xml --color=yes quantumgraphcoloring/tests/
-
+      - name: Upload test results to Codecov
+          if: ${{ !cancelled() }}
+          uses: codecov/test-results-action@v1
+          with:
+            token: ${{ secrets.CODECOV_TOKEN }}
       - name: CodeCov
         uses: codecov/codecov-action@v1
         with:
