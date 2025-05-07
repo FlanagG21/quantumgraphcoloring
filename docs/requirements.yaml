@@ -1,22 +1,23 @@
 name: docs_QuantumGraphColoring
 channels:
-
   - conda-forge
-
   - defaults
 dependencies:
-    # Base depends
+  # Base depends
   - python
   - pip
-  
+
+  # Project depends
+  - matplotlib
+  - numpy
+  - networkx
+  - qiskit
+
+  # Sphinx extensions
   - pydata-sphinx-theme
   - sphinx-design
   - sphinx-copybutton
 
-
-
-
-    # Pip-only installs
+  # Pip-only installs
   - pip:
-    - -e ../
-
+      - -e ../
