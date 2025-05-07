@@ -5,7 +5,7 @@ QuantumGraphColoring
 [![codecov](https://codecov.io/gh/FlanagG21/QuantumGraphColoring/branch/main/graph/badge.svg)](https://codecov.io/gh/FlanagG21/QuantumGraphColoring/branch/main)
 
 
-A re-implementation of the K-coloring algorithem proposed in A general quantum method to solve the graph K-colouring problem by Maurice Clerc
+A re-implementation of the K-coloring algorithm proposed in A general quantum method to solve the graph K-coloring problem by Maurice Clerc
 
 ### Copyright
 
