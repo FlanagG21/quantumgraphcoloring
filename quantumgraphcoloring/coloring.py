@@ -1,17 +1,18 @@
 """Provide the primary functions."""
-from .bitstring import *
 import matplotlib.pyplot as plt
+import networkx as nx
 import numpy as np
 from qiskit import *
 from qiskit.visualization import plot_histogram
 from qiskit_aer import Aer
 
-def color(k, G=[[]]):
-    """_summary_
+
+def potentialColors(k, G=[[]]):
+    """prints a list of potential colorings, some will not fully color the graph
 
     Args:
         k (_type_): number of colors to color the graph
-        G (list, optional): adjacency matrix of the graph to be colored.
+        G (list, optional): adjacency matrix of the graph to be colored. Defaults to [[]].
     """
     sim = Aer.get_backend('qasm_simulator')
     circuit = circuitGenerator(k, G)
@@ -21,13 +22,41 @@ def color(k, G=[[]]):
     print('The solutions, if there are any, are the ones without', k,"leading 0's")
     print('n*k matrix can be rebuilt reading right to left, starting a new line every', k, "bits")
 
-
-
-def circuitGenerator(nColors, G = [[]]):
-    """_summary_
+def color(k, G=[[]]):
+    """prints a colored graph
 
     Args:
-        G (list, optional): Adjacency matrix for nodes
+        k (int): the number of colors to try
+        G (list, optional): _description_. Defaults to [[]].
+    """
+    sim = Aer.get_backend("qasm_simulator")
+    circuit = circuitGenerator(k, G)
+    possibleColoring = False
+    bitList = []
+    i = 0
+    while not possibleColoring and i <= 1000:
+        job = sim.run(circuit)
+        counts = job.result().get_counts()
+        bitStr = list(counts.keys())[0]
+        bitList = [int(b) for b in bitStr]
+        for j in range(k):
+            if bitList[j] != 0:
+                possibleColoring = True
+                break
+        i += 1
+    colorMatrix = getColoring(k, bitList, G)
+    graph = nx.from_numpy_array(np.array(G))
+    colors = ["red", "green", "blue", "yellow", "purple", "orange"]
+    colorNumber = [row.index(1) for row in colorMatrix]
+    nodeColors = [colors[i] for i in colorNumber]
+    nx.draw(graph, with_labels=True, node_color=nodeColors, edge_color='gray', node_size=600)
+    plt.show()
+
+def circuitGenerator(nColors, G = [[]]):
+    """generates a quantum circuit for coloring the graph G in nColors
+    Args:
+    
+        G (list, optional): Adjacency matrix for the graph. Defaults to [[]].
     Returns: 
         the circuit that will color the graph.
     """
@@ -95,10 +124,10 @@ def circuitGenerator(nColors, G = [[]]):
 
 
 def getEdges(G = [[]]):
-    """_summary_
+    """gets the edges from the adjacency matrix G
 
     Args:
-        G (list, optional): Adjacency matrix for nodes
+        G (list, optional): Adjacency matrix for nodes, Defaults to [[]].
     Returns: 
         a list of the Edges of the graph
     """
@@ -108,3 +137,22 @@ def getEdges(G = [[]]):
         for j in range(i+1, nodes):
             edges.append(G[i][j])
     return edges
+
+def getColoring(k, bitList = [], G =[[]]):
+    """gets the n*k coloring matrix
+
+    Args:
+        bitList (list, optional):  a list of bits. Defaults to [].
+        G (list, optional): Adjacency matrix for nodes, Defaults to [[]].
+        k (int): the number of colors.
+    Returns:
+        the n*k coloring matrix
+    """
+    bitList = bitList[::-1]
+    colorMatrix = [[] for _ in range(len(G))]
+    j = 0
+    for i in range(len(bitList)):
+        colorMatrix[j].append(bitList[i])
+        if (i + 1)% k == 0:
+            j += 1
+    return colorMatrix
