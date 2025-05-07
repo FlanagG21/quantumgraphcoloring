@@ -20,6 +20,7 @@ def potentialColors(k, G=[[]]):
     print(counts)
     print('The solutions, if there are any, are the ones without', k,"leading 0's")
     print('n*k matrix can be rebuilt reading right to left, starting a new line every', k, "bits")
+    return counts
 
 def color(k, G=[[]]):
     """prints a colored graph

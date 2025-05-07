@@ -31,4 +31,9 @@ def test_getColoringMatrix():
     """test of the getColoringMatrix method in quantumgraphcoloring
     """
     colorMatrix1 = qGC.getColoringMatrix(2, [1,0,0,1,1,0], [[0, 1, 0],[1, 0, 1], [0, 1, 0]])
-    assert(colorMatrix1 == [[0,1],[1,0],[0,1]])
+    assert(colorMatrix1 == [[0,1],[1,0],[0,1]])\
+        
+def test_potentialColorings():
+    c = qGC.potentialColors(2, [[0,1],[1,0]])
+    c = set(c.keys())
+    assert(c == set(['0001', '0110', '1001', '0010']))
