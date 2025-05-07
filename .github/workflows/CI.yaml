@@ -70,3 +70,5 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: FlanagG21/QuantumGraphColoring
+
+
