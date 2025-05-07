@@ -2,11 +2,18 @@ name: test
 channels:
 
   - defaults
+  - conda-forge
 dependencies:
     # Base depends
   - python
   - pip
 
+  # Project depends
+  - matplotlib
+  - numpy
+  - networkx
+  - qiskit
+  - qiskit-aer
     # Testing
   - pytest
   - pytest-cov
