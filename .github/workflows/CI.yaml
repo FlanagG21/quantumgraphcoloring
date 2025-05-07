@@ -9,11 +9,6 @@ on:
   pull_request:
     branches:
       - "main"
-  schedule:
-    # Weekly tests run on main by default:
-    #   Scheduled workflows run on the latest commit on the default or base branch.
-    #   (from https://help.github.com/en/actions/reference/events-that-trigger-workflows#scheduled-events-schedule)
-    - cron: "0 0 * * 0"
 
 jobs:
   test:
@@ -58,12 +53,12 @@ jobs:
         run: |
           pytest -v --cov=quantumgraphcoloring --cov-report=xml --color=yes quantumgraphcoloring/tests/
 
-      - name: CodeCov
-        uses: codecov/codecov-action@v1
-        with:
-          file: ./coverage.xml
-          flags: unittests
-          name: codecov-${{ matrix.os }}-py${{ matrix.python-version }}
+      #- name: CodeCov
+      #  uses: codecov/codecov-action@v1
+      #  with:
+      #    file: ./coverage.xml
+      #    flags: unittests
+      #    name: codecov-${{ matrix.os }}-py${{ matrix.python-version }}
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
