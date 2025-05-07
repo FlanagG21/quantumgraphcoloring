@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
 from qiskit import *
-from qiskit.visualization import plot_histogram
 from qiskit_aer import Aer
 
 

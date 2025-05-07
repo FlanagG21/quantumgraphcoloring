@@ -12,6 +12,8 @@ dependencies:
   - numpy
   - networkx
   - qiskit
+  - qiskit-aer
+  
 
   # Sphinx extensions
   - pydata-sphinx-theme
