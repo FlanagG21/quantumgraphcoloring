@@ -17,7 +17,7 @@ jobs:
     strategy:
       matrix:
         os: [macOS-latest, ubuntu-latest, windows-latest]
-        python-version: [3.9, "3.10", "3.11"]
+        python-version: [3.8, 3.9, "3.10"]
 
     steps:
       - uses: actions/checkout@v4
@@ -29,15 +29,13 @@ jobs:
           df -h
           ulimit -a
 
-      # More info on options: https://github.com/marketplace/actions/setup-micromamba
-      - uses: mamba-org/setup-micromamba@v1
+      # More info on options: https://github.com/marketplace/actions/provision-with-micromamba
+      - uses: mamba-org/provision-with-micromamba@main
         with:
           environment-file: devtools/conda-envs/test_env.yaml
           environment-name: test
-          condarc: |
-            channels:
-              - conda-forge
-          create-args: >- 
+          channels: conda-forge,defaults
+          extra-specs: |
             python=${{ matrix.python-version }}
 
       - name: Install package
@@ -59,12 +57,9 @@ jobs:
       #    file: ./coverage.xml
       #    flags: unittests
       #    name: codecov-${{ matrix.os }}-py${{ matrix.python-version }}
-
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v4.0.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          slug: FlanagG21/QuantumGraphColoring
-
-
+          slug: FlanagG21/quantumgraphcoloring
 
