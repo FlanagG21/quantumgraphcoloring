@@ -19,15 +19,13 @@ alternatively you could run
 .. code-block:: python
     quantumgraphcoloring.getColoringMatrix(k, key, G)
 
-to gets the n*k coloring matrix. 
-
+to get the n*k coloring matrix. 
     Args:
         k (int): the number of colors.
         key (list, optional):  a list of bits, in this case the key you wish to turn into the n*k coloring matrix
         G (list, optional): Adjacency matrix for the graph. Defaults to [[]].
     Returns:
         the n*k coloring matrix
-to get the coloring matrix
 
 The other way of getting a coloring is to use
 
@@ -54,7 +52,7 @@ This method generates a quantum circuit for coloring the graph G in nColors
 lastly you can use:
 .. code-block:: python
     getEdges(G = [[]])
-    
+
 to get the list of edges from the adjacency matrix G
     Args:
         G (list, optional): Adjacency matrix for nodes, Defaults to [[]].

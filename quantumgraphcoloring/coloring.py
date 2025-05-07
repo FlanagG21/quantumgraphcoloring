@@ -10,8 +10,10 @@ def potentialColors(k, G=[[]]):
     """prints a list of potential colorings, some will not fully color the graph
 
     Args:
-        k (_type_): number of colors to color the graph
+        k (int): number of colors to color the graph
         G (list, optional): adjacency matrix of the graph to be colored. Defaults to [[]].
+    Returns: 
+        a dictionary with the observed coloring encodings
     """
     sim = Aer.get_backend('qasm_simulator')
     circuit = circuitGenerator(k, G)
